@@ -7,6 +7,7 @@ import time
 from datetime import datetime
 import pickle
 import shutil
+import hashlib
 
 GREASY_EXECUTION_PATH = os.getcwd()
 
@@ -437,7 +438,11 @@ def second_step(corpus_metadata_id, hash_split_number, n_parts, n_used_hash_spli
 
 
 def get_hash(document: Document) -> int:
-    return hash(document.get_text())
+    #return hash(document.get_text())
+
+    # outputs will be ints 
+    #return int(hashlib.sha512(document.get_text().encode('utf-8'),usedforsecurity=False).hexdigest(),16)
+    return int(hashlib.sha512(document.get_text().encode('utf-8'),usedforsecurity=False).hexdigest(),16)
 
 
 def first_step(metadata_path, corpus_metadata_id, input_format, part, n_hash_splits, deduplication_temp_path,
@@ -450,6 +455,8 @@ def first_step(metadata_path, corpus_metadata_id, input_format, part, n_hash_spl
 
     # hash structure
     hash_container = SplitHashContainer(n_hash_splits)
+
+    assert sys.maxsize >= hash_container.get_system_max_size(), 'Error, created system int max size is not the smaller than the one created, dedup will not work properly.'
     duplicated_ids = []
     total_uniques = 0
     total_docs = 0

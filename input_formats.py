@@ -1868,3 +1868,28 @@ def clean_json(args) -> Iterator[Document]:
             for doc_dict in ijson.items(f, 'content.item'):
                 yield Document.from_dict(doc_dict)
 """
+
+
+class plaintext_docperline(InputFormat):
+
+    def read(self) -> Iterator[Document]:
+        if get_sqlite_status(self.args) == 'cleaned':
+            return
+        paths = get_raw_paths_from_args_json(self.args)
+        for path, identifier, part in paths:
+
+            with open(path, 'r') as f:
+                for document in f:
+                    # print(document)
+                    yield Document([], part=part, identifier=identifier, text=document.rstrip('\n'))
+
+    def split(self, doc: Document) -> Document:
+
+        for line in doc.get_text().split('\n'):
+            current_paragraph = Paragraph([])
+            for text in sent_tokenize(line):
+                with contextlib.suppress(Exception):
+                    sentence = Sentence(text)
+                    current_paragraph.append(sentence)
+            doc.append(current_paragraph)
+        return doc
