@@ -14,6 +14,8 @@ sample/configurations/
 # information for Eclipse / Flash Builder.
 /preprocess_and_score/nltk_data/
 /.idea/
+/test_data/*
+/tests/*
 /test_data/test1/
 /nltk_data
 /nltk_data/
