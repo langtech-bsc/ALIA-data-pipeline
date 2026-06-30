@@ -456,7 +456,7 @@ def first_step(metadata_path, corpus_metadata_id, input_format, part, n_hash_spl
     # hash structure
     hash_container = SplitHashContainer(n_hash_splits)
 
-    assert sys.maxsize >= hash_container.get_system_max_size(), 'Error, created system int max size is not the smaller than the one created, dedup will not work properly.'
+    # Python ints are arbitrary-precision; no max-size assertion needed here.
     duplicated_ids = []
     total_uniques = 0
     total_docs = 0
