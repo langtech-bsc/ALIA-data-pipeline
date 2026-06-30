@@ -1878,7 +1878,7 @@ class plaintext_docperline(InputFormat):
         paths = get_raw_paths_from_args_json(self.args)
         for path, identifier, part in paths:
 
-            with open(path, 'r') as f:
+            with open(path, 'r', encoding='utf-8') as f:
                 for document in f:
                     # print(document)
                     yield Document([], part=part, identifier=identifier, text=document.rstrip('\n'))

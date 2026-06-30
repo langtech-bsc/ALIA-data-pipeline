@@ -442,7 +442,12 @@ def get_hash(document: Document) -> int:
 
     # outputs will be ints 
     #return int(hashlib.sha512(document.get_text().encode('utf-8'),usedforsecurity=False).hexdigest(),16)
-    return int(hashlib.sha512(document.get_text().encode('utf-8'),usedforsecurity=False).hexdigest(),16)
+    text = document.get_text().encode('utf-8')
+    try:
+        digest = hashlib.sha512(text, usedforsecurity=False)
+    except TypeError:
+        digest = hashlib.sha512(text)
+    return int(digest.hexdigest(),16)
 
 
 def first_step(metadata_path, corpus_metadata_id, input_format, part, n_hash_splits, deduplication_temp_path,
