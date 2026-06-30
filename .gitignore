@@ -44,3 +44,4 @@ checkers/scores/*
 /test_data/test1/*
 
 anonymizer/truecaser/spanish.dist
+classify_topic/blacklists_curate/adult/domains
