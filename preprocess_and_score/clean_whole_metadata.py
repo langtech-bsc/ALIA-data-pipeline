@@ -71,7 +71,7 @@ if __name__ == "__main__":
                 vars(args_)))
 
     env = dict()
-    env['INPUT_FORMAT'] = args_.input_format
+    env['SPLIT'] = args_.input_format
     env['METADATA'] = args_.metadata_path
     env['SCRIPTVENV'] = args_.venv_script
     env['TESTFOLDER'] = args_.testing_folder
