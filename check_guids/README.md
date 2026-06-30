@@ -1,6 +1,6 @@
 # Check GUIDs
 
-This module is part of the **CURATE** project, which aims to provide a set of tools to clean
+This module is part of the **ALIA Data Pipeline** project, which aims to provide a set of tools to clean
 and preprocess corpora in order to make them ready to be used for training NLP models.
 
 ## Module overview

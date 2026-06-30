@@ -65,7 +65,7 @@ class Score(Processor):
             if self.final_args is not None:
                 value = self.func(obj, *self.final_args)
             else:
-                value = self.func(obj, None)
+                value = self.func(obj)
             obj.scores[self.name] = value
         else:
             value = obj.scores[self.name]

@@ -1,6 +1,6 @@
 # Corpus Metadata Tool
 
-The metadata tool is a tool developed by the data team which aims to centralize the management of metadata for all the data sources. It can be used by anyone if customizing the folder structure. This tool should be run before any other CURATE module, as it generates a metadata file with all paths and information relevant to run them. 
+The metadata tool is a tool developed by the data team which aims to centralize the management of metadata for all the data sources. It can be used by anyone if customizing the folder structure. This tool should be run before any other ALIA Data Pipeline module, as it generates a metadata file with all paths and information relevant to run them. 
 
 ## Setup
 

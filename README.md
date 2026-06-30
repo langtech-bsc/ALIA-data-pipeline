@@ -2,9 +2,9 @@
 <div align="center">
 <h1 align="center">
 <img src="bsc.jpg" width="150" />
-<br>CURATE: Corpus Utility for RAting TExts
+<br>ALIA Data Pipeline
 </h1>
-<h3>Sweeping away the clutter, CURATE delivers perfection.</h3>
+<h3>Sweeping away the clutter, the ALIA Data Pipeline delivers perfection.</h3>
 </div>
 
 ---
@@ -22,7 +22,7 @@
   - [I/O arguments](#io-args)
   - [Full example](#full-example)
 - [🧪 Running Tests](#-running-tests)
-- [📖 Resources generated with CURATE](#resources-generated-with-curate)
+- [📖 Resources generated with the ALIA Data Pipeline](#resources-generated-with-curate)
 - [🤝 Contributions](#contributions)
 - [📜 License](#license)
 - [☎️ Contact](#contact)
@@ -33,7 +33,7 @@
 
 ## 📍 Overview
 
-The Corpus Cleaner consists of several modules corresponding to different steps in our text processing pipeline. 
+The ALIA Data Pipeline consists of several modules corresponding to different steps in our text processing pipeline. 
 Each module is a python script that can be run from the command line. The modules are organized into folders based on their functionality. 
 The root directory contains some utilities relating to the input, internal representation and output of documents. 
 These are used by the rest of modules.
@@ -76,14 +76,14 @@ they might not work properly.
 
 You will have to do the following steps to install the project and run any module (as they all use input and output formats):
 
-1. Clone the CURATE repository:
+1. Clone the ALIA Data Pipeline repository:
 ```sh
-git clone https://github.com/langtech-bsc/CURATE.git
+git clone https://github.com/langtech-bsc/ALIA-data-pipeline.git
 ```
 
 2. Change to the project directory:
 ```sh
-cd CURATE
+cd ALIA-data-pipeline
 ```
 
 3. Create a virtual environment and the dependencies:
@@ -430,7 +430,7 @@ Which would be an example of what is needed to execute the [preprocessing and sc
 
 Both executions will take the first 100 documents, print them on screen, and then write them to a file in the specified output format. You can check the results of deduplication and scoring in the specified `test_data/test1` folder.
 
-## 📖 Resources generated with CURATE
+## 📖 Resources generated with the ALIA Data Pipeline
 
 * CATalog 1.0: https://huggingface.co/datasets/projecte-aina/CATalog 
 

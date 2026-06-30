@@ -25,6 +25,7 @@ WHAT IF I want to modify one? Then, create a copy of it called <NAME_OF_YOUR_FUN
 
 from functools import partial
 import inspect
+import os
 from typing import Callable, List, Tuple
 from document import Paragraph, Document
 import re
@@ -513,3 +514,119 @@ def wrong_begin_end_line_ratio_evaluator(document: Document,
     res = inter_(wrong_begin_end_line_ratio)
 
     return res
+
+
+# ---------------------------------------------------------------------------
+# BSC-EDU classifier
+# ---------------------------------------------------------------------------
+
+_BSCEDU_MODEL = None
+_BSCEDU_TOKENIZER = None
+
+_BSCEDU_MODEL_DIR = os.path.join(os.path.dirname(__file__), "models", "bsc-edu-classifier")
+_BSCEDU_HF_REPO = "BSC-LT/bsc-edu-classifier"
+
+# The model returns a regression score in the range [-2, 4].
+# We normalise it to [0, 1] for compatibility with the rest of the pipeline.
+_BSCEDU_SCORE_MIN = -2.0
+_BSCEDU_SCORE_MAX = 4.0
+
+
+def _load_bscedu_model():
+    """Lazy-load the BSC-EDU classifier model and tokeniser.
+
+    The model is first looked up in ``preprocess_and_score/models/bsc-edu-classifier``.
+    If it is not found there, it is downloaded from HuggingFace
+    (``BSC-LT/bsc-edu-classifier``) and saved in that directory.
+    """
+    global _BSCEDU_MODEL, _BSCEDU_TOKENIZER
+
+    if _BSCEDU_MODEL is not None:
+        return
+
+    try:
+        import torch
+        from transformers import AutoTokenizer, AutoModelForSequenceClassification
+    except ImportError as exc:
+        raise ImportError(
+            "The bscedu_document_evaluator requires 'torch' and 'transformers'. "
+            "Install them with: pip install torch transformers"
+        ) from exc
+
+    model_path = _BSCEDU_MODEL_DIR
+
+    if not os.path.isdir(model_path) or not os.listdir(model_path):
+        print(f"[bscedu] Model not found at '{model_path}'. Downloading from HuggingFace ({_BSCEDU_HF_REPO})…")
+        os.makedirs(model_path, exist_ok=True)
+        # snapshot_download saves all model files locally
+        try:
+            from huggingface_hub import snapshot_download
+            snapshot_download(repo_id=_BSCEDU_HF_REPO, local_dir=model_path)
+        except Exception:
+            # Fall back to from_pretrained with cache_dir
+            tokenizer_tmp = AutoTokenizer.from_pretrained(_BSCEDU_HF_REPO, use_fast=True)
+            model_tmp = AutoModelForSequenceClassification.from_pretrained(_BSCEDU_HF_REPO)
+            tokenizer_tmp.save_pretrained(model_path)
+            model_tmp.save_pretrained(model_path)
+        print(f"[bscedu] Model saved to '{model_path}'.")
+
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    dtype = torch.float16 if device.type == "cuda" else torch.float32
+
+    _BSCEDU_TOKENIZER = AutoTokenizer.from_pretrained(model_path, use_fast=True)
+    _BSCEDU_MODEL = AutoModelForSequenceClassification.from_pretrained(model_path, torch_dtype=dtype)
+    _BSCEDU_MODEL.to(device)
+    _BSCEDU_MODEL.eval()
+    print(f"[bscedu] Model loaded on {device}.")
+
+
+def bscedu_document_evaluator(document: Document) -> float:
+    """
+    Assigns a quality score to a document using the BSC-EDU regression classifier
+    (``BSC-LT/bsc-edu-classifier``).
+
+    The model produces a continuous score in the range **[-2, 4]**, where higher
+    values indicate higher educational / quality value.  This raw score is
+    linearly normalised to **[0, 1]** before being returned, so that it is
+    compatible with the rest of the pipeline's scoring framework.
+
+    The model is a document-level evaluator: the full text of the document is
+    tokenised (truncated to 512 sub-word tokens) and fed to the model in one
+    pass.  GPU inference is used automatically when CUDA is available; otherwise
+    the model runs on CPU with float32 precision.
+
+    :param document: (type: Document) document for which the quality score is
+        calculated.
+    """
+    if document is None:
+        return 0.0
+
+    _load_bscedu_model()
+
+    import torch
+
+    text = document.get_text()
+    if not text or not text.strip():
+        return 0.0
+
+    device = next(_BSCEDU_MODEL.parameters()).device
+
+    inputs = _BSCEDU_TOKENIZER(
+        text,
+        padding=False,
+        truncation=True,
+        max_length=512,
+        return_tensors="pt",
+    ).to(device)
+
+    with torch.inference_mode():
+        outputs = _BSCEDU_MODEL(**inputs)
+        logits = outputs.logits
+        if logits.shape[-1] == 1:
+            raw_score = logits.squeeze(-1).item()
+        else:
+            raw_score = torch.softmax(logits, dim=-1)[0, 1].item()
+
+    # Normalise from [-2, 4] to [0, 1]
+    normalised = (raw_score - _BSCEDU_SCORE_MIN) / (_BSCEDU_SCORE_MAX - _BSCEDU_SCORE_MIN)
+    return float(max(0.0, min(1.0, normalised)))

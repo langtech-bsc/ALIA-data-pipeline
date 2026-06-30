@@ -3,3 +3,6 @@ typing
 tqdm
 regex
 ftfy
+torch
+transformers
+huggingface_hub
