@@ -192,7 +192,7 @@ we have already done so and the script is located
 [here](../cluster_launchers/deduplicate/test_example.sh)
 
 
-2. Under de CURATE root folder (the parent folder of deduplicate), now we can launch the deduplication processs over a cluster 
+2. Under de ALIA Data Pipeline root folder (the parent folder of deduplicate), now we can launch the deduplication processs over a cluster 
 by typing in the bash console the following command:
 
 ```bash
