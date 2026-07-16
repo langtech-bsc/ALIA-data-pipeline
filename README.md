@@ -1,13 +1,10 @@
 
 <div align="center">
 <h1 align="center">
-<img src="alia.png" width="300" />
+<img src="alia.png" width="900" />
 <br>ALIA Data Pipeline
 </h1>
-<h3>Sweeping away the clutter, the ALIA Data Pipeline delivers perfection.</h3>
 </div>
-
----
 
 ## 📒 Table of Contents
 - [📍 Overview](#-overview)
