@@ -1,7 +1,7 @@
 
 <div align="center">
 <h1 align="center">
-<img src="alia.png" width="150" />
+<img src="alia.png" width="300" />
 <br>ALIA Data Pipeline
 </h1>
 <h3>Sweeping away the clutter, the ALIA Data Pipeline delivers perfection.</h3>
@@ -446,15 +446,13 @@ Any contributions you make are greatly appreciated.
 5. Open a Pull Request
 
 ## 📜 License
-This project is distributed under the Apache-2.0 license. See the [LICENSE](https://github.com/langtech-bsc/CURATE/blob/main/LICENSE) file for more information.
+This project is distributed under the Apache-2.0 license. See the [LICENSE](https://github.com/langtech-bsc/ALIA-data-pipeline/blob/main/LICENSE) file for more information.
 
 ## ☎️ Contact
-Language Technologies Unit (langtech@bsc.es) at the Barcelona Supercomputing Center (BSC). 
+AI Institute at the Barcelona Supercomputing Center (BSC). 
 
 ## 🥇 Acknowledgements
-This work has been promoted and financed by the Generalitat de Catalunya through the Aina project.
-
-This work is the result of the project reference 2022/TL22/00215337 funded by the Ministerio de Asuntos Económicos y Transformación Digital and by the Plan de Recuperación, Transformación y Resiliencia founded by EU - NextGenerationEU.
+El proyecto Desarrollo de Modelos ALIA, Resol. SEDIA 19.08.2024, en el marco del Plan Nacional de Tecnologías de Lenguaje-ENIA 2024, está financiado por el Ministerio para la Transformación Digital y de la Función Pública, por el Plan de Recuperación, Transformación y Resiliencia y por la Unión Europea-NextGenerationEU. 
 
 ## 📝 Citation
 ```
